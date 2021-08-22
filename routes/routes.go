@@ -7,4 +7,5 @@ import (
 
 func LoadRoutes() {
 	http.HandleFunc("/", controllers.ProductsIndex)
+	http.HandleFunc("/new", controllers.ProductsNew)
 }

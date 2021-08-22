@@ -14,3 +14,7 @@ func ProductsIndex(w http.ResponseWriter, r *http.Request) {
 	products := models.GetAllProducts()
 	loadTemplates().ExecuteTemplate(w, "Index", products)
 }
+
+func ProductsNew(w http.ResponseWriter, r *http.Request) {
+	loadTemplates().ExecuteTemplate(w, "New", nil)
+}
