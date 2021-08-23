@@ -1,6 +1,9 @@
 package models
 
-import database "go-web/db"
+import (
+	database "go-web/db"
+	"log"
+)
 
 type Product struct {
 	Id int
@@ -42,4 +45,25 @@ func GetAllProducts() []Product {
 	}
 
 	return products
+}
+
+type SaveNewProductDTO struct {
+	Name string
+	Description string
+	Price float64
+	Quantity int
+}
+
+func SaveNewProduct(productDTO *SaveNewProductDTO) {
+	log.Println(*productDTO)
+
+	db := database.ConnectDb()
+	defer db.Close()
+
+	insertDB, err := db.Prepare("insert into products(name, description, price, quantity) values ($1, $2, $3, $4)")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	insertDB.Exec(productDTO.Name, productDTO.Description, productDTO.Price, productDTO.Quantity)
 }

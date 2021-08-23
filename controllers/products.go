@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"go-web/models"
+	"log"
 	"net/http"
+	"strconv"
 	"text/template"
 )
 
@@ -17,4 +19,28 @@ func ProductsIndex(w http.ResponseWriter, r *http.Request) {
 
 func ProductsNew(w http.ResponseWriter, r *http.Request) {
 	loadTemplates().ExecuteTemplate(w, "New", nil)
+}
+
+func ProductsInsert(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		name := r.FormValue("name")
+		description := r.FormValue("description")
+		price, err := strconv.ParseFloat(r.FormValue("price"), 64)
+		if err != nil {
+			log.Println("error on the conversion process")
+		}
+		quantity, err := strconv.Atoi(r.FormValue("quantity"))
+		if err != nil {
+			log.Println("error on the conversion process")
+		}
+
+		models.SaveNewProduct(&models.SaveNewProductDTO{
+			Name:        name,
+			Description: description,
+			Price:       price,
+			Quantity:    quantity,
+		})
+	}
+
+	http.Redirect(w,r, "/", 301)
 }
