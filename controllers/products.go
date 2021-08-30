@@ -44,3 +44,10 @@ func ProductsInsert(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w,r, "/", 301)
 }
+
+func ProductsDelete(w http.ResponseWriter, r *http.Request) {
+	log.Println(r.URL.Query())
+	id := r.URL.Query().Get("productId")
+	models.DeleteProduct(id)
+	http.Redirect(w, r, "/", 301)
+}

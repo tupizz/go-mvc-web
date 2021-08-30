@@ -67,3 +67,15 @@ func SaveNewProduct(productDTO *SaveNewProductDTO) {
 
 	insertDB.Exec(productDTO.Name, productDTO.Description, productDTO.Price, productDTO.Quantity)
 }
+
+func DeleteProduct(id string){
+	db := database.ConnectDb()
+	defer db.Close()
+
+	deleteProduct, err := db.Prepare("delete from products where id=$1")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	deleteProduct.Exec(id)
+}
